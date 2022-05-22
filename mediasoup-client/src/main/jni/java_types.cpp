@@ -22,6 +22,8 @@ std::string JavaToNativeString(JNIEnv* jni, const JavaRef<jstring>& j_string)
 void JavaToNativeOptions(
   JNIEnv* env, const JavaRef<jobject>& configuration, jlong factory, PeerConnection::Options& options)
 {
+	options.factory = reinterpret_cast<webrtc::PeerConnectionFactoryInterface*>(factory);
+	
 	if (configuration.is_null())
 	{
 		return;
@@ -35,6 +37,5 @@ void JavaToNativeOptions(
 		  env, webrtc::JavaParamRef<jobject>(configuration.obj()), &rtc_config);
 		options.config = rtc_config;
 	}
-	options.factory = reinterpret_cast<webrtc::PeerConnectionFactoryInterface*>(factory);
 }
 } // namespace mediasoupclient
